@@ -1,0 +1,21 @@
+{
+  "name": "short_url",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "worker": "node worker.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "kafkajs": "^2.2.4",
+    "mongoose": "^9.10.3",
+    "nanoid": "^6.0.1",
+    "redis": "^5.12.1",
+    "shortid": "^2.2.17"
+  }
+}

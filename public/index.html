@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Short URL</title>
+<style>
+  body{font-family:system-ui,sans-serif;max-width:560px;margin:12vh auto;padding:0 1rem;color:#1f1f1f}
+  h1{font-weight:600;font-size:1.6rem}
+  form{display:flex;gap:.5rem}
+  input{flex:1;padding:.7rem;border:1px solid #bbb;border-radius:8px;font-size:1rem}
+  button{padding:.7rem 1.1rem;border:0;border-radius:8px;background:#222;color:#fff;font-size:1rem;cursor:pointer}
+  #out{margin-top:1.2rem;word-break:break-all}
+  .err{color:#b00020}
+  small{color:#777}
+</style>
+</head>
+<body>
+<h1>Short URL</h1>
+<form id="f">
+  <input id="u" type="url" placeholder="https://example.com/a/very/long/link" required>
+  <button>Shorten</button>
+</form>
+<div id="out"></div>
+<p><small>Analytics: <code>/url/analytics/&lt;code&gt;</code></small></p>
+<script>
+const out = document.getElementById('out');
+document.getElementById('f').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  out.textContent = '...';
+  try {
+    const r = await fetch('/url', {method:'POST', headers:{'content-type':'application/json'},
+      body: JSON.stringify({originalUrl: document.getElementById('u').value})});
+    const d = await r.json();
+    if (!r.ok) { out.className = 'err'; out.textContent = d.error || 'Something went wrong'; return; }
+    out.className = '';
+    const a = document.createElement('a');
+    a.href = a.textContent = d.shortLink;
+    out.replaceChildren(a);
+  } catch { out.className = 'err'; out.textContent = 'Network error'; }
+});
+</script>
+</body>
+</html>
